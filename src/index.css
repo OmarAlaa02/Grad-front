@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Main colors */
+  --primary: #0d9488;
+  --primary-light: #14b8a6;
+  --primary-dark: #0f766e;
+  --secondary: #f59e0b;
+  --secondary-dark: #d97706;
+
+  /* UI colors */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0d9488;
+
+  /* State colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* Text colors */
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--foreground);
+  background-color: var(--background);
+  background-image: radial-gradient(at 100% 0%, rgba(13, 148, 136, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* ===== Component Styles ===== */
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 
+           text-white font-medium py-2.5 px-5 rounded-lg shadow-md hover:shadow-lg 
+           transition-all duration-200 flex items-center justify-center;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 
+           text-white font-medium py-2.5 px-5 rounded-lg shadow-md hover:shadow-lg 
+           transition-all duration-200 flex items-center justify-center;
+  }
+
+  .btn-outline {
+    @apply border border-gray-300 hover:border-teal-300 bg-white hover:bg-gray-50 
+           text-gray-700 font-medium py-2.5 px-5 rounded-lg shadow-sm hover:shadow 
+           transition-all duration-200 flex items-center justify-center;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 
+           p-6 border border-gray-100;
+  }
+
+  /* Form elements */
+  .input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent 
+           transition-all duration-200 bg-white;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-warning {
+    @apply bg-amber-100 text-amber-800;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  /* Section titles */
+  .section-title {
+    @apply text-2xl font-bold text-gray-900 mb-6 relative;
+  }
+
+  .section-title::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-16 h-1 bg-teal-600 rounded-full -mb-2;
+  }
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ===== Animations ===== */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ===== Message Bubbles ===== */
+.message-bubble-ai {
+  @apply bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800 
+         rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-sm shadow-sm;
+}
+
+.message-bubble-user {
+  @apply bg-gradient-to-br from-teal-500 to-teal-600 text-white 
+         rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-br-sm shadow-sm;
+}
+
+/* ===== Gradients ===== */
+.text-gradient {
+  @apply bg-gradient-to-r from-teal-700 to-teal-900 text-transparent bg-clip-text;
+}
+
+.bg-gradient-card {
+  @apply bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-100;
+}
+
+.bg-gradient-header {
+  @apply bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-100;
+}
