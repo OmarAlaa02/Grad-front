@@ -38,7 +38,7 @@ const SignUp = () => {
         formData.email,
         formData.password
       );
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       setError("Failed to create an account");
       console.error(err);

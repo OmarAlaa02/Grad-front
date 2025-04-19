@@ -1,5 +1,5 @@
 function speek(question, cb) {
-  return;
+  // return;
   if ("speechSynthesis" in window) {
     const utterance = new SpeechSynthesisUtterance(question);
     utterance.lang = "en-US"; // Change language if needed
@@ -24,7 +24,7 @@ function listen(setAnswer, setIsListening) {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.lang = "en-US";
-  recognition.continuous = false; // Stop after one sentence
+  recognition.continuous = true; // Stop after one sentence
   recognition.interimResults = true; // Only final results
 
   // setIsListening(true);

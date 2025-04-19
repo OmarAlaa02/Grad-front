@@ -50,8 +50,8 @@ const InterviewHistory = () => {
     filter === "all"
       ? interviews
       : interviews.filter((interview) => {
-          if (filter === "high") return interview.score >= 90
-          if (filter === "medium") return interview.score >= 70 && interview.score < 90
+          if (filter === "high") return interview.score >= 80
+          if (filter === "medium") return interview.score >= 70 && interview.score < 80
           if (filter === "low") return interview.score < 70
           return true
         })
@@ -85,13 +85,13 @@ const InterviewHistory = () => {
             className={`px-3 py-1 rounded-md ${filter === "high" ? "bg-green-600 text-white" : "bg-gray-200"}`}
             onClick={() => setFilter("high")}
           >
-            High Score (90+)
+            High Score (80+)
           </button>
           <button
             className={`px-3 py-1 rounded-md ${filter === "medium" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
             onClick={() => setFilter("medium")}
           >
-            Medium Score (70-89)
+            Medium Score (70-79)
           </button>
           <button
             className={`px-3 py-1 rounded-md ${filter === "low" ? "bg-red-500 text-white" : "bg-gray-200"}`}
@@ -115,7 +115,7 @@ const InterviewHistory = () => {
                 <div className="text-right">
                   <div
                     className={`text-xl font-bold mb-1 ${
-                      interview.score >= 90
+                      interview.score >= 80
                         ? "text-green-600"
                         : interview.score >= 70
                           ? "text-yellow-600"

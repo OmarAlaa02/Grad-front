@@ -47,7 +47,7 @@ const roles = [
     ),
   },
   {
-    id: "fullstack",
+    id: "full-stack",
     title: "Full Stack Developer",
     description: "Combination of frontend and backend technologies",
     icon: (

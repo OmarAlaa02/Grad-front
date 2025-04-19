@@ -6,6 +6,7 @@ import PreInterview from "./pages/PreInterview"
 import Interview from "./pages/Interview"
 import InterviewHistory from "./pages/InterviewHistory"
 import InterviewDetails from "./pages/InterviewDetails"
+import CVBuilder from "./pages/CVBuilder"
 import Navbar from "./components/Navbar"
 import { AuthProvider } from "./context/AuthContext"
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/cv" element={<CVBuilder />} />
               <Route
                 path="/"
                 element={

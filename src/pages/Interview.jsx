@@ -420,7 +420,7 @@ const Interview = () => {
               Thank you for completing the mock interview. Your responses are being analyzed.
             </p>
             <div className="flex justify-center space-x-4">
-              <button onClick={() => navigate(`/interview-details/${role}`)} className="btn-primary">
+              <button onClick={() => navigate(`/interview-details/${interview}`)} className="btn-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 mr-2"
