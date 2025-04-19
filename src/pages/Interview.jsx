@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { listen, speek } from "../helpers/speechapi";
+import { listen, speek ,recognition} from "../helpers/speechapi";
 // Mock interview questions based on role
 const mockQuestions = {
   frontend: [
@@ -314,7 +314,12 @@ const Interview = () => {
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      if(recognition)
+      {
+        recognition.stop();
+        setIsListening(false);
+      }
+      handleSubmit();
     }
   };
 
@@ -433,10 +438,12 @@ const Interview = () => {
 
               <textarea
                 value={answer}
+    
                 onChange={(e) => setAnswer(e.target.value)}
                 placeholder="Type your answer or click the microphone to speak..."
                 className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
                 rows={2}
+                onKeyDown={handleKeyPress}
               />
 
               <button

@@ -110,9 +110,9 @@ const roles = [
     ),
   },
   {
-    id: "product",
-    title: "Arificial Intelligence",
-    description: "Focus on product strategy, roadmaps, and user experience",
+    id: "artificial-intelligence",
+    title: "Artificial Intelligence",
+    description: "Focus on AI strategies, algorithms, and machine learning applications.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -12,7 +12,7 @@ function speek(question, cb) {
   }
 }
 
-let recognition;
+export let recognition;
 
 function listen(setAnswer, setIsListening) {
   if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
@@ -24,7 +24,7 @@ function listen(setAnswer, setIsListening) {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.lang = "en-US";
-  recognition.continuous = false; // Stop after one sentence
+  recognition.continuous = true; // Stop after one sentence
   recognition.interimResults = true; // Only final results
 
   // setIsListening(true);
