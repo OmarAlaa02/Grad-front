@@ -142,7 +142,7 @@ const InterviewDetails = () => {
                 : "text-red-600"
             }`}
           >
-            {interview.score}/100
+            {interview.score.toFixed(2)}/100
           </div>
         </div>
 

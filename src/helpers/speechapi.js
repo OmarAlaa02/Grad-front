@@ -24,7 +24,7 @@ function listen(setAnswer, setIsListening) {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.lang = "en-US";
-  recognition.continuous = true; // Stop after one sentence
+  recognition.continuous = false; // Stop after one sentence
   recognition.interimResults = true; // Only final results
 
   // setIsListening(true);

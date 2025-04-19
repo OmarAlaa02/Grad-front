@@ -36,14 +36,40 @@ const mockQuestions = {
   ],
 };
 
-const questions =[
-  [{id:5,question:"Describe the principles of Object-Oriented Programming (OOP)."}], //easy general
-  [{id:11,question:"What is the difference between an array and a linked list?"}], //medium general
-  [{id:12,question:"Explain the time complexity of an algorithm."}], //hard general
-  [{id:119,question:"What are the advantages of using a microservices architecture?"}], //easy backend
-  [{id:105,question:"What is the difference between SQL and NoSQL databases?"}], //medium backend
-  [{id:127,question:"What is a 'race condition' in software development?"}], //hard backend
-]
+const questions = [
+  [
+    {
+      id: 5,
+      question: "Describe the principles of Object-Oriented Programming (OOP).",
+    },
+  ], //easy general
+  [
+    {
+      id: 11,
+      question: "What is the difference between an array and a linked list?",
+    },
+  ], //medium general
+  [{ id: 12, question: "Explain the time complexity of an algorithm." }], //hard general
+  [
+    {
+      id: 119,
+      question:
+        "What are the advantages of using a microservices architecture?",
+    },
+  ], //easy backend
+  [
+    {
+      id: 105,
+      question: "What is the difference between SQL and NoSQL databases?",
+    },
+  ], //medium backend
+  [
+    {
+      id: 127,
+      question: "What is a 'race condition' in software development?",
+    },
+  ], //hard backend
+];
 
 const Interview = () => {
   const { role } = useParams();
@@ -66,6 +92,7 @@ const Interview = () => {
   const [answer, setAnswer] = useState("");
   const [currentlyInterviewing, setCurrentlyInterviewing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [isFinalQuestionEvaluated, setIsFinalQuestionEvaluated] =
     useState(false);
   // const [isListening, setIsListening] = useState(false);
@@ -113,7 +140,11 @@ const Interview = () => {
         setAskedQuestions([interviewQuestions.current[0][0]]);
         setIsLoading(false);
         speek(interviewQuestions.current[0][0].question, () => {
-          listen(setAnswer, setIsListening);
+          setIsThinking(true);
+          setTimeout(function () {
+            setIsThinking(false);
+            listen(setAnswer, setIsListening);
+          }, 2000);
         });
       } catch (err) {
         console.log("error occured ", err);
@@ -150,13 +181,18 @@ const Interview = () => {
     // console.log(interviewQuestions);
     const question =
       interviewQuestions.current[difficultyIndex][questionIndex + 1]?.question;
+
     speek(question, () => {
-      listen(setAnswer, setIsListening);
+      setIsThinking(true);
+      setTimeout(function () {
+        setIsThinking(false);
+        listen(setAnswer, setIsListening);
+      }, 2000);
+      setAskedQuestions((prev) => [
+        ...prev,
+        interviewQuestions.current[difficultyIndex][questionIndex + 1],
+      ]);
     });
-    setAskedQuestions((prev) => [
-      ...prev,
-      interviewQuestions.current[difficultyIndex][questionIndex + 1],
-    ]);
     // console.log(
     //   "asked question ",
     //   interviewQuestions.current[questionIndex + 1]
@@ -213,7 +249,9 @@ const Interview = () => {
       { question: answer, id: new Date().getTime() },
     ]);
 
-    getNextQuestion();
+    setTimeout(function(){
+      getNextQuestion()
+    }, 4000);
     setAnswer("");
   }
 
