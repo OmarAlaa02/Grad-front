@@ -80,7 +80,7 @@ const Navbar = () => {
               >
                 Interview History
               </Link>
-              <Link to="/pre-interview" className="btn-primary text-sm py-2 px-4 rounded-2xl">
+              {/* <Link to="/pre-interview" className="btn-primary text-sm py-2 px-4 rounded-2xl">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 mr-1"
@@ -91,7 +91,7 @@ const Navbar = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 New Interview
-              </Link>
+              </Link> */}
               <div className="relative group">
                 <button className="flex items-center space-x-1 bg-teal-50 text-teal-800 rounded-full px-3 py-1.5 hover:bg-teal-100 transition-colors">
                   <span>{currentUser.email.split("@")[0]}</span>

@@ -111,7 +111,7 @@ const roles = [
   },
   {
     id: "product",
-    title: "Product Manager",
+    title: "Arificial Intelligence",
     description: "Focus on product strategy, roadmaps, and user experience",
     icon: (
       <svg

@@ -99,7 +99,7 @@ const cvData = {
 
 const Home = () => {
   const { currentUser } = useAuth();
-  const [activeTab, setActiveTab] = useState("cvs");
+  const [activeTab, setActiveTab] = useState("interviews");
   const [cvs, setCvs] = useState([]);
   const [interviews, setInterviews] = useState([]);
 
@@ -247,12 +247,12 @@ const Home = () => {
                       </svg>
                       Download
                     </button>
-                    <PDFDownloadLink
+                    {/* <PDFDownloadLink
                       document={<CVDocument data={cvData} />}
                       fileName="cv.pdf"
                     >
                       Download CV
-                    </PDFDownloadLink>
+                    </PDFDownloadLink> */}
                   </div>
                 </div>
               ))}
@@ -328,7 +328,7 @@ const Home = () => {
         <div>
           <div className="flex justify-between items-center mb-6">
             <h2 className="section-title">Your Interviews</h2>
-            <Link to="/pre-interview" className="btn-primary">
+            <Link to="/pre-interview" className="btn-primary rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 mr-2"

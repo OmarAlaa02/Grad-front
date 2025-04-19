@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import {listen,speek} from '../helpers/speechapi'
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { listen, speek } from "../helpers/speechapi";
 // Mock interview questions based on role
 const mockQuestions = {
   frontend: [
@@ -34,22 +34,31 @@ const mockQuestions = {
     "How do you stay updated with the latest technologies?",
     "Do you have any questions for me?",
   ],
-}
+};
+
+const questions =[
+  [{id:5,question:"Describe the principles of Object-Oriented Programming (OOP)."}], //easy general
+  [{id:11,question:"What is the difference between an array and a linked list?"}], //medium general
+  [{id:12,question:"Explain the time complexity of an algorithm."}], //hard general
+  [{id:119,question:"What are the advantages of using a microservices architecture?"}], //easy backend
+  [{id:105,question:"What is the difference between SQL and NoSQL databases?"}], //medium backend
+  [{id:127,question:"What is a 'race condition' in software development?"}], //hard backend
+]
 
 const Interview = () => {
-  const { role } = useParams()
-  const navigate = useNavigate()
-  const [messages, setMessages] = useState([])
-  const [currentInput, setCurrentInput] = useState("")
-  const [isListening, setIsListening] = useState(false)
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [interviewComplete, setInterviewComplete] = useState(false)
+  const { role } = useParams();
+  const navigate = useNavigate();
+  const [messages, setMessages] = useState([]);
+  const [currentInput, setCurrentInput] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [interviewComplete, setInterviewComplete] = useState(false);
   // const [loading, setLoading] = useState(true)
-  const [interviewData, setInterviewData] = useState(null)
-  const messagesEndRef = useRef(null)
-  const recognitionRef = useRef(null)
-  
-  let interviewQuestions = useRef([]);
+  const [interviewData, setInterviewData] = useState(null);
+  const messagesEndRef = useRef(null);
+  const recognitionRef = useRef(null);
+
+  let interviewQuestions = useRef(questions);
   let interviewID = useRef(null);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [difficultyIndex, setDifficultyIndex] = useState(0);
@@ -57,6 +66,8 @@ const Interview = () => {
   const [answer, setAnswer] = useState("");
   const [currentlyInterviewing, setCurrentlyInterviewing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFinalQuestionEvaluated, setIsFinalQuestionEvaluated] =
+    useState(false);
   // const [isListening, setIsListening] = useState(false);
   // Mock fetch interview data
   useEffect(() => {
@@ -82,8 +93,7 @@ const Interview = () => {
     //   ])
     // }, 1500)
 
-    async function FetchInterviewQuestions()
-    {
+    async function FetchInterviewQuestions() {
       try {
         const res = await fetch(
           `http://localhost:8080/question?role=${role}&duration=quick`,
@@ -92,27 +102,26 @@ const Interview = () => {
           }
         );
 
-        const { interviewId, questions } = await res.json();
+        const { interviewId } = await res.json();
 
         // console.log("interviewId ",interviewId);
         console.log(questions);
 
-        interviewQuestions.current = questions;
+        // interviewQuestions.current = questions;
         interviewID.current = interviewId;
 
-        setAskedQuestions([questions[0][0]]);
+        setAskedQuestions([interviewQuestions.current[0][0]]);
         setIsLoading(false);
-        speek(questions[0][0].question, () => {
+        speek(interviewQuestions.current[0][0].question, () => {
           listen(setAnswer, setIsListening);
         });
-
       } catch (err) {
         console.log("error occured ", err);
       }
     }
 
     FetchInterviewQuestions();
-  }, [])
+  }, []);
 
   function getNextQuestion() {
     // adaptive
@@ -156,8 +165,7 @@ const Interview = () => {
     setQuestionIndex(questionIndex + 1);
   }
 
-  async function sendToModel(data)
-  {
+  async function sendToModel(data) {
     try {
       const res = await fetch("http://localhost:8080/interview/answer", {
         method: "POST",
@@ -168,8 +176,14 @@ const Interview = () => {
         credentials: "include",
       });
 
-      const result = await res.json();
-      console.log(result);
+      const { message, qId } = await res.json();
+      if (
+        qId ===
+        interviewQuestions.current[5][interviewQuestions.current[5].length - 1]
+          .id
+      )
+        setIsFinalQuestionEvaluated(true);
+      console.log(message);
     } catch (err) {
       console.log("error occured", err);
     }
@@ -205,8 +219,8 @@ const Interview = () => {
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [askedQuestions])
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [askedQuestions]);
 
   // const toggleListening = () => {
   //   if (isListening) {
@@ -261,20 +275,22 @@ const Interview = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="text-center">
           <div className="w-16 h-16 border-t-4 border-b-4 border-indigo-500 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Preparing your interview...</p>
+          <p className="text-gray-600 font-medium">
+            Preparing your interview...
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -298,7 +314,12 @@ const Interview = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
             </svg>
             Exit
           </button>
@@ -307,15 +328,24 @@ const Interview = () => {
 
       <div className="card mb-6 h-[60vh] flex flex-col">
         <div className="flex-1 overflow-y-auto mb-4 p-4">
-          {askedQuestions.map((message,index) => (
-            <div key={message.id} className={`mb-6 ${index % 2 ===0  ? "pr-12" : "pl-12"}`}>
+          {askedQuestions.map((message, index) => (
+            <div
+              key={message.id}
+              className={`mb-6 ${index % 2 === 0 ? "pr-12" : "pl-12"}`}
+            >
               <div
-                className={`p-4 rounded-2xl ${index % 2 == 0 ? "message-bubble-ai" : "message-bubble-user"}`}
+                className={`p-4 rounded-2xl ${
+                  index % 2 == 0 ? "message-bubble-ai" : "message-bubble-user"
+                }`}
               >
                 {message.question}
               </div>
-              <div className={`text-xs mt-1 text-gray-500 ${index % 2 ===0  ? "text-left" : "text-right"}`}>
-                {index % 2 ===0  ? "AI Interviewer" : "You"}
+              <div
+                className={`text-xs mt-1 text-gray-500 ${
+                  index % 2 === 0 ? "text-left" : "text-right"
+                }`}
+              >
+                {index % 2 === 0 ? "AI Interviewer" : "You"}
               </div>
             </div>
           ))}
@@ -341,7 +371,9 @@ const Interview = () => {
               <button
                 // onClick={toggleListening}
                 className={`p-3 rounded-full mr-3 transition-colors ${
-                  isListening ? "bg-red-500 text-white hover:bg-red-600" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  isListening
+                    ? "bg-red-500 text-white hover:bg-red-600"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
                 title={isListening ? "Stop recording" : "Start recording"}
               >
@@ -412,54 +444,74 @@ const Interview = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-green-800 mb-2">Interview Complete!</h3>
+            <h3 className="text-xl font-semibold text-green-800 mb-2">
+              Interview Complete!
+            </h3>
             <p className="text-green-700 mb-6">
-              Thank you for completing the mock interview. Your responses are being analyzed.
+              Thank you for completing the mock interview. Your responses are
+              being analyzed.
             </p>
             <div className="flex justify-center space-x-4">
-              <button onClick={() => navigate(`/interview-details/${interview}`)} className="btn-primary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
-                View Results
-              </button>
-              <button onClick={() => navigate("/")} className="btn-outline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                Return to Home
-              </button>
+              {!isFinalQuestionEvaluated && (
+                <h1>please wait while model evaluates your answers </h1>
+              )}
+              {isFinalQuestionEvaluated && (
+                <>
+                  <button
+                    onClick={() =>
+                      navigate(`/interview-details/${interviewID.current}`)
+                    }
+                    className="btn-primary"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2 "
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                    View Results
+                  </button>
+                  <button onClick={() => navigate("/")} className="btn-outline">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                      />
+                    </svg>
+                    Return to Home
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Interview
+export default Interview;
